@@ -1,6 +1,8 @@
 
+from collections import UserDict
 from django import forms
-from rango.models import Page, Category
+from rango.models import UserProfile
+from rango.models import Page, Category, UserProfile
 
 class CategoryForm(forms.ModelForm):
     name = forms.CharField(max_length=128,
@@ -33,5 +35,15 @@ class PageForm(forms.ModelForm):
         # Here, we are hiding the foreign key.
         # we can either exclude the category field from the form,
         exclude = ('category',)
-        # or specify the fields to include (don't include the category field).
-        #fields = ('title', 'url', 'view
+
+class UserForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+    
+    class Meta:
+        model = UserDict
+        fields = ('username', 'email', 'password',)
+
+    class UserProfileForm(forms.ModelForm):
+        class Meta:
+            model = UserProfile
+            fields = ('website', 'picture',)
