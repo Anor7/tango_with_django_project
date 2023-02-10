@@ -6,5 +6,5 @@ def index(request):
 
 # Create your views here.
 def about(request):
-    return HttpResponse("ango says here is the about page." + "<a href='/rango/'>Index</a>")
+    return HttpResponse("Rango says here is the about page." + "<a href='/rango/'>Index</a>")
 
