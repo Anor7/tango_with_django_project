@@ -1,8 +1,12 @@
+from contextlib import _RedirectStream
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.shortcuts import redirect
+
 # Import the Category model
 from rango.models import Category
 from rango.models import Page
+from rango.forms import CategoryForm
 
 def index(request):
     # Construct a dictionary to pass to the template engine as its context.
@@ -52,3 +56,19 @@ def show_category(request, category_name_slug):
 
 # Go render the response and return it to the client.
     return render(request, 'rango/category.html', context=context_dict)
+
+def add_category(request):
+    form = CategoryForm()
+
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+
+    if form.is_valid():
+        # Save the new category to the database.
+        form.save(commit=True)
+        # Now that the category is saved, we could confirm this.
+        # For now, just redirect the user back to the index view.
+        return _RedirectStream('/rango/')
+    else:
+        print(form.errors)
+    return render(request, 'rango/add_category.html', {'form': form})
